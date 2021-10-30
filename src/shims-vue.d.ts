@@ -6,7 +6,7 @@ declare module '*.vue' {
 }
 declare module '*.png'
 declare module '*.js'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-declare const requireModuleJs = (module: string) => any
+// eslint-disable-next-line
+declare var requireModuleJs = (module: string) => any
 declare module 'jsonp'
 type songChannel = 'QQ' | 'netEase' | 'kugou' | 'kuwo'
