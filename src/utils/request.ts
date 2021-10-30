@@ -1,4 +1,5 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import { newAxiosRequestConfig } from '@/views/song'
+import axios from 'axios'
 import { Toast } from 'vant'
 import { webViewReady } from './tools'
 
@@ -18,10 +19,8 @@ error => {
   Toast.fail('接口异常！')
   return Promise.reject(error) // 返回接口返回的错误信息
 })
-export default (opt: AxiosRequestConfig): Promise<any> => {
-  const { userAgent } = navigator
-  const isWebview = userAgent.indexOf('EEUI_WEB') !== -1
-  const eeAjax = (opt: AxiosRequestConfig): Promise<any> => {
+export default (opt: newAxiosRequestConfig): Promise<any> => {
+  const eeAjax = (opt: newAxiosRequestConfig): Promise<any> => {
     return new Promise((resolve, reject) => {
       webViewReady().then(eeTools => {
         const options = {
@@ -44,7 +43,7 @@ export default (opt: AxiosRequestConfig): Promise<any> => {
       })
     })
   }
-  if (isWebview) {
+  if (opt.eeAjax === true) {
     return eeAjax(opt)
   } else {
     delete opt.headers

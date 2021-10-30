@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 import { isWebView } from '@/utils/tools'
 import { playDetail } from '@/views/playListDetail/type'
+import { newAxiosRequestConfig } from '@/views/song'
 import { SongGroupData } from '@/views/songGroupList/type'
-import { AxiosRequestConfig } from 'axios'
 import moment from 'moment'
 
-const requestKugou = (option: AxiosRequestConfig<any>) => {
+const requestKugou = (option: newAxiosRequestConfig<any>) => {
   return request({
     ...option,
     headers: {

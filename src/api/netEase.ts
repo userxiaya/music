@@ -1,14 +1,13 @@
 import request from '@/utils/request'
 import { isWebView } from '@/utils/tools'
 import { SongGroupData } from '@/views/songGroupList/type'
-import { AxiosRequestConfig } from 'axios'
 import queryString from 'query-string'
 import { weapi } from '@/utils/cypto'
 import moment from 'moment'
 import { playDetail } from '@/views/playListDetail/type'
-import { songItem } from '@/views/song'
+import { newAxiosRequestConfig, songItem } from '@/views/song'
 
-const requestNetEase = (option: AxiosRequestConfig<any>) => {
+const requestNetEase = (option: newAxiosRequestConfig<any>) => {
   return request({
     ...option,
     data: queryString.stringify(weapi(option.data)),

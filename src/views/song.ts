@@ -1,3 +1,9 @@
+import { AxiosRequestConfig } from 'axios'
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface newAxiosRequestConfig<T = any> extends AxiosRequestConfig {
+  eeAjax?: boolean
+}
 // 歌手-item
 export type singerItem = {
   id: number,
