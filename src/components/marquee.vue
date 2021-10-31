@@ -6,7 +6,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { defineProps, ref, computed, watch } from 'vue'
+import { defineProps, ref, computed, watch, onMounted } from 'vue'
 const contentRef = ref<HTMLElement | null>(null)
 const wrapRef = ref<HTMLElement | null>(null)
 const props = defineProps<{
@@ -37,7 +37,7 @@ const contentStyle = computed(() => {
     animationDuration: duration.value + 's'
   }
 })
-watch(content, () => {
+const init = () => {
   const wrap = wrapRef.value
   const content = contentRef.value
   if (wrap && content) {
@@ -46,6 +46,12 @@ watch(content, () => {
     duration.value = offsetWidth.value / speed.value
     animationClass.value = 'animate'
   }
+}
+watch(content, () => {
+  init()
+})
+onMounted(() => {
+  init()
 })
 const onAnimationEnd = () => {
   firstRound.value = false

@@ -31,7 +31,7 @@
                   <div class="nick_name">{{ detail?.userName }}</div>
                 </div>
                 <div class="desc" @click.stop="openDetail">
-                  <div class="van-ellipsis">简介：{{ detail?.desc }}</div>
+                  <div class="van-ellipsis">简介：<span v-html="detail?.desc" style="height: 100%; overflow: hidden;"></span></div>
                   <Icon name="arrow"/>
                 </div>
               </div>
@@ -217,11 +217,11 @@ onBeforeRouteLeave((to, from, next) => {
           display: flex;
           align-items: center;
           :deep(.van-icon) {
-            padding-top: 3px;
             padding-left: 10px;
           }
           .van-ellipsis {
             max-width: 100%;
+            height: 100%;
             width: auto;
             box-sizing: border-box;
             display: inline-block;

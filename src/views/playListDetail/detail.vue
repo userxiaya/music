@@ -4,7 +4,7 @@
     <StatusBar>
       <NavBar :border="false" left-arrow @click-left="emit('back')">
         <template #title>
-          <Marquee class="title" :delay="0.5" :speed="20" :content="detail?.name">{{ detail?.name }}</Marquee>
+          <Marquee class="title" :delay="0.5" :speed="30" :content="detail?.name">{{ detail?.name }}</Marquee>
         </template>
       </NavBar>
     </StatusBar>
@@ -16,6 +16,11 @@
         <Image lazy-load :src="detail?.userIcon || ''" />
       </div>
       {{ detail?.userName || '' }}
+    </div>
+    <div class="tag_content">
+      <div v-for="(tags, index) in detail?.tagList" :key="index" class="tag">
+        <div class="text">{{ tags.name }}</div>
+      </div>
     </div>
     <p class="desc" v-html="detail?.desc || ''"></p>
   </div>
@@ -77,11 +82,35 @@ const emit = defineEmits<{
   }
   .desc {
     padding: 15px;
+    text-align: center;
     box-sizing: border-box;
     font-size: 25px;
-    letter-spacing: 3px; //字间距
+    letter-spacing: 2px; //字间距
     line-height: 40px;
-    text-indent: 50px;
+  }
+  .tag_content {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    .tag {
+      height: 40px;
+      display: inline-block;
+      width: auto;
+      line-height: 0px;
+      font-size: 24px;
+      border: 1px #fff solid;
+      margin-right: 15px;
+      padding: 0 15px;
+      border-radius: 40px;
+      &:last-child {
+        margin-right: 0px;
+      }
+      .text {
+        display: flex;
+        height: 100%;
+        align-items: center;
+      }
+    }
   }
 }
 </style>
