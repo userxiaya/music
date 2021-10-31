@@ -1,5 +1,5 @@
 import { ComputedRef, ref, watch, Ref } from 'vue'
-
+import router from '@/router'
 let eeTools = null
 export const webViewReady = (): Promise<any> => {
   return new Promise((resolve) => {
@@ -38,7 +38,7 @@ export const setPageBackPressed = (): void => {
   }
 }
 
-export const useImage = (url: ComputedRef<string|undefined>): { width: Ref<number>, height: Ref<number>, background: Ref<string>, backgroundShow: Ref<string> } => {
+export const useImage = (url: ComputedRef<string | undefined>): { width: Ref<number>, height: Ref<number>, background: Ref<string>, backgroundShow: Ref<string> } => {
   const width = ref<number>(0)
   const height = ref<number>(0)
   const background = ref<string>('')
@@ -79,4 +79,19 @@ export const useImage = (url: ComputedRef<string|undefined>): { width: Ref<numbe
     background,
     backgroundShow
   }
+}
+export const openPage = (url: string): void => {
+  const isWebview = isWebView()
+  if (isWebview) {
+    const jumpUrl = `${window.location.href.split('#')[0]}#${url}`
+    webViewReady().then(tools => {
+      tools.openPage({
+        url: jumpUrl,
+        pageType: 'web',
+        statusBarType: 'immersion'
+      })
+    })
+    return
+  }
+  router.push(url)
 }

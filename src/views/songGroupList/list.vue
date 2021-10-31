@@ -7,14 +7,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
 import { List } from 'vant'
 import { useLoadMore } from 'vue-request'
 import { computed, Ref, ref, defineProps, onActivated, onDeactivated } from 'vue'
 import Item from '@/components/songGroupItem.vue'
 import { SongGroupData, SongGroupListData } from './type'
+import { openPage } from '@/utils/tools'
 
-const router = useRouter()
 const props = defineProps<{
   getList:(params?: { current?: number, pageSize?: number }) => Promise<SongGroupData>
 }>()
@@ -60,13 +59,7 @@ onDeactivated(() => {
   console.log('离开,记录滚动位置')
 })
 const select = ({ id, songChannel }: SongGroupListData) => {
-  router.push({
-    name: 'playListDetail-page',
-    params: {
-      songChannel,
-      id
-    }
-  })
+  openPage(`/playListDetail/${songChannel}/${id}`)
 }
 
 </script>
