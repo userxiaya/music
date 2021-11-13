@@ -3,8 +3,9 @@ import axios from 'axios'
 import { Toast } from 'vant'
 import { webViewReady, isWebview } from './tools'
 
+const timeout = 12000
 const axiosRequest = axios.create({
-  timeout: 12000
+  timeout
 })
 axiosRequest.interceptors.response.use((response:any) => {
   // 拦截响应，做统一处理
@@ -26,7 +27,7 @@ export default (opt: newAxiosRequestConfig): Promise<any> => {
         const options = {
           url: `${opt.baseURL}${opt.url}`,
           method: opt.method,
-          timeout: 12000,
+          timeout,
           headers: opt.headers,
           data: {
             ...opt.params,
