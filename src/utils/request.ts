@@ -43,12 +43,11 @@ export default (opt: newAxiosRequestConfig): Promise<any> => {
       })
     })
   }
+  // webview上使用原生查询
   if (isWebview) {
     return eeAjax(opt)
   } else {
-    if (!isWebview) {
-      delete opt.headers
-    }
+    delete opt.headers
     return axiosRequest(opt)
   }
 }

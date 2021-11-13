@@ -83,7 +83,20 @@ export const getPlayDetail = (id: string): Promise<playDetail> => {
       data
     }).then(async (res) => {
       const data = res?.playlist || {}
-      const songList = await querySongList(data.trackIds.map((e: { id: number }) => e.id))
+      const getListPromise = []
+      const count = 100
+      const list = data.trackIds.map((e: { id: number }) => e.id)
+      for (let i = 0; i < list.length; i += count) {
+        const trackIds = list.slice(i, i + count)
+        getListPromise.push(querySongList(trackIds))
+      }
+      // 拆分查询 （webview查询数据过大报错）
+      const songListResult = await Promise.all(getListPromise)
+      let songList: songItem[] = []
+      songListResult.forEach(lists => {
+        songList = [...songList, ...lists]
+      })
+      console.log(songList.length, data.trackIds.length)
       const result: playDetail = {
         id: data.id,
         userName: data.creator.nickname,
