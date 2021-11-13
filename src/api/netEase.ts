@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { isWebView } from '@/utils/tools'
+import { isWebview } from '@/utils/tools'
 import { SongGroupData } from '@/views/songGroupList/type'
 import queryString from 'query-string'
 import { weapi } from '@/utils/cypto'
@@ -10,7 +10,7 @@ import { newAxiosRequestConfig, songItem } from '@/views/song'
 const requestNetEase = (option: newAxiosRequestConfig<any>) => {
   return request({
     ...option,
-    data: queryString.stringify(weapi(option.data)),
+    data: isWebview ? weapi(option.data) : queryString.stringify(weapi(option.data)),
     headers: {
       referer: 'https://music.163.com/',
       'content-type': 'application/x-www-form-urlencoded',
@@ -18,7 +18,7 @@ const requestNetEase = (option: newAxiosRequestConfig<any>) => {
     }
   })
 }
-const isWebview = isWebView()
+
 const baseUrl1: string = isWebview ? 'https://music.163.com' : '/music.163.com'
 
 /**

@@ -1,7 +1,7 @@
 import { newAxiosRequestConfig } from '@/views/song'
 import axios from 'axios'
 import { Toast } from 'vant'
-import { webViewReady } from './tools'
+import { webViewReady, isWebview } from './tools'
 
 const axiosRequest = axios.create({
   timeout: 12000
@@ -43,10 +43,12 @@ export default (opt: newAxiosRequestConfig): Promise<any> => {
       })
     })
   }
-  if (opt.eeAjax === true) {
+  if (isWebview) {
     return eeAjax(opt)
   } else {
-    delete opt.headers
+    if (!isWebview) {
+      delete opt.headers
+    }
     return axiosRequest(opt)
   }
 }

@@ -10,7 +10,8 @@
     <Tabs v-model:active="activeName" animated>
       <Tab v-for="tab in tabList" :key="tab.name" :name="tab.name" :title="tab.title">
         <div class="content">
-          <List v-if="cacheList.indexOf(tab.name)!!==-1" :get-list="getApi(tab.name)"/>
+          <List v-if="activeName === tab.name" :get-list="getApi(tab.name)" />
+          <!-- <List v-if="cacheList.indexOf(tab.name)!!==-1" :get-list="getApi(tab.name)"/> -->
         </div>
       </Tab>
     </Tabs>
@@ -37,7 +38,7 @@ const tabList = ref<tabs[]>([
   { title: '网易云', name: 'netEase' },
   { title: '酷狗', name: 'kugou' }
 ])
-watch(activeName, (name:string) => {
+watch(activeName, (name: string) => {
   if (cacheList.value.indexOf(name) === -1) {
     cacheList.value.push(name)
   }
@@ -45,13 +46,13 @@ watch(activeName, (name:string) => {
 const getApi = (name: string): any => {
   let result = null
   switch (name) {
-    case 'qq' :
+    case 'qq':
       result = getSongGroupListQQ
       break
     case 'netEase':
       result = getSongGroupListNetEase
       break
-    case 'kugou' :
+    case 'kugou':
       result = getSongGroupListKugou
       break
     default:

@@ -1,6 +1,4 @@
-import { createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import { initRouter } from './vue-history'
-import { songGroupList, playListDetail } from './pageList'
+import { createWebHashHistory, RouteRecordRaw, createRouter } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,16 +8,16 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/songGroupList',
     name: 'songGroupList',
-    component: songGroupList('songGroupList')
+    component: () => import(/* webpackChunkName: "songGroupList" */'@/views/songGroupList/index.vue')
   },
   {
     path: '/playListDetail/:songChannel/:id',
     name: 'playListDetail-page',
-    component: playListDetail('playListDetail-page')
+    component: () => import(/* webpackChunkName: "playListDetail" */'@/views/playListDetail/index.vue')
   }
 ]
 
-const router = initRouter({
+const router = createRouter({
   history: createWebHashHistory(),
   routes
 })

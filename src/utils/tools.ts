@@ -17,14 +17,16 @@ export const webViewReady = (): Promise<any> => {
     }
   })
 }
-export const isWebView = (): boolean => {
+const isEEUI = (): boolean => {
   const { userAgent } = navigator
   return userAgent.indexOf('EEUI_WEB') !== -1
 }
+const isEEUIWeb = isEEUI()
+export const isWebview = isEEUIWeb
 
 // 处理webview返回事件
 export const setPageBackPressed = (): void => {
-  if (isWebView()) {
+  if (isWebview) {
     webViewReady().then((tools) => {
       tools.setPageBackPressed('index', () => {
         const hisLen = history.length
@@ -41,15 +43,15 @@ export const setPageBackPressed = (): void => {
 export const useImage = (url: ComputedRef<string | undefined>): { width: Ref<number>, height: Ref<number>, background: Ref<string>, backgroundShow: Ref<string> } => {
   const width = ref<number>(0)
   const height = ref<number>(0)
-  const background = ref<string>('')
-  const backgroundShow = ref<string>('') // 背景透明度
+  const background = ref<string>('linear-gradient(to right bottom, rgb(97, 119, 107) 40%, rgb(98, 120, 108) 60%, rgb(98, 120, 108) 100%)')
+  const backgroundShow = ref<string>('linear-gradient(to right bottom, rgb(97, 119, 107) 40%, rgba(98, 120, 108, 0.8) 60%, rgba(98, 120, 108, 0.6) 100%)') // 背景透明度
   watch(url, (src) => {
     if (src) {
       const canvas = document.createElement('canvas')
       const ctx = canvas?.getContext('2d')
       const img = new Image()
-
-      const url = !isWebView() ? src.replace('http://', '/').replace('https://', '/') : src
+      // 是否webview加载（webview允许跨域）
+      const url = !isWebview ? src.replace('http://', '/').replace('https://', '/') : src
       img.src = url
       // 加载完成执行
       img.onload = function () {
@@ -81,12 +83,13 @@ export const useImage = (url: ComputedRef<string | undefined>): { width: Ref<num
   }
 }
 export const openPage = (url: string): void => {
-  const isWebview = isWebView()
   if (isWebview) {
     const jumpUrl = `${window.location.href.split('#')[0]}#${url}`
     webViewReady().then(tools => {
       tools.openPage({
         url: jumpUrl,
+        animated: true,
+        animatedType: 'push',
         pageType: 'web',
         statusBarType: 'immersion'
       })

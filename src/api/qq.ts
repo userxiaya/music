@@ -1,18 +1,14 @@
 import request from '@/utils/request'
-import { isWebView } from '@/utils/tools'
+import { isWebview } from '@/utils/tools'
 import { playDetail } from '@/views/playListDetail/type'
 import { newAxiosRequestConfig } from '@/views/song'
 import { SongGroupData } from '@/views/songGroupList/type'
 
-const isWebview = isWebView()
 const requestQQ = (option: newAxiosRequestConfig<any>) => {
   return request({
     ...option,
-    eeAjax: isWebview,
     headers: {
-      Referer: 'https://y.qq.com/',
-      'User-Agent':
-        'Mozilla/5.0 (Linux; U; Android 8.1.0; zh-cn; BLA-AL00 Build/HUAWEIBLA-AL00) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/57.0.2987.132 MQQBrowser/8.9 Mobile Safari/537.36'
+      Referer: 'https://y.qq.com/'
     }
   })
 }

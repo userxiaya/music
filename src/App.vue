@@ -1,10 +1,18 @@
 <template>
-  <WebviewLayout v-if="iswebview" />
-  <Layout v-else />
+  <Layout/>
+  <MinBar/>
 </template>
 <script lang="ts" setup>
-import { isWebView } from '@/utils/tools'
-import WebviewLayout from '@/components/layout/webviewLayout.vue'
+import MinBar from '@/components/minBar.vue'
 import Layout from '@/components/layout/layout.vue'
-const iswebview = isWebView()
+
 </script>
+<style lang="less">
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+}
+</style>

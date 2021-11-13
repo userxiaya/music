@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { isWebView } from '@/utils/tools'
+import { isWebview } from '@/utils/tools'
 import { playDetail } from '@/views/playListDetail/type'
 import { newAxiosRequestConfig } from '@/views/song'
 import { SongGroupData } from '@/views/songGroupList/type'
@@ -15,7 +15,7 @@ const requestKugou = (option: newAxiosRequestConfig<any>) => {
     }
   })
 }
-const isWebview = isWebView()
+
 const baseUrl1: string = isWebview ? 'https://m.kugou.com' : '/m.kugou.com'
 
 /**
