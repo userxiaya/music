@@ -1,8 +1,6 @@
 <template>
   <div class="detail" ref="detailRef">
-    <div class="loading" v-if="loading">
-      <Loading color="#07c160" size="24px">加载中...</Loading>
-    </div>
+    <Loading color="#07c160" size="24px" class="page-loading" v-if="loading">加载中...</Loading>
     <template v-else-if="showType === 'index'">
       <div class="playContent" ref="contentRef">
         <div class="overlay" :style="contentStyle"></div>
@@ -155,13 +153,6 @@ onBeforeRouteLeave((to, from, next) => {
   height: 100%;
   width: 100%;
   position: relative;
-}
-.loading {
-  text-align: center;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  padding-top: 100px;
 }
 .detail {
   width: 100%;

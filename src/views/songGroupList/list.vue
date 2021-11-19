@@ -2,20 +2,19 @@
 <template>
   <div class="list_content" ref="listRef">
     <List class="list" :finished="finished" finished-text="没有更多了" @load="onLoad">
-      <Item v-for="item in dataList" :key="item.id" :data="item" @select="select"/>
+      <Item v-for="item in dataList" :key="item.id" :data="item" @select="select" />
     </List>
   </div>
 </template>
 <script lang="ts" setup>
 import { List } from 'vant'
 import { useLoadMore } from 'vue-request'
-import { computed, Ref, ref, defineProps, watch, nextTick } from 'vue'
+import { computed, Ref, ref, defineProps, onActivated, onDeactivated, nextTick } from 'vue'
 import Item from '@/components/songGroupItem.vue'
 import { SongGroupData, SongGroupListData } from './type'
-import { openPage } from '@/utils/tools'
+import router from '@/router'
 
 const props = defineProps<{
-  show: boolean,
   getList:(params?: { current?: number, pageSize?: number }) => Promise<SongGroupData>
 }>()
 interface getListRequest {
@@ -23,9 +22,6 @@ interface getListRequest {
   dataList: Ref<SongGroupData['list'] | []>
   loadMore: (params?: { current?: number, pageSize?: number }) => void
 }
-const show = computed(() => {
-  return props.show
-})
 const scrollTop = ref<number>(0)
 const current = ref<number>(0)
 const pageSize = ref<number>(30)
@@ -52,22 +48,28 @@ const onLoad = () => {
     loadMore()
   }
 }
-watch(show, (flag) => {
-  if (flag) {
-    nextTick(() => {
+onActivated(() => {
+  nextTick(() => {
+    setTimeout(() => {
       if (listRef?.value && scrollTop.value) {
         listRef.value.scrollTop = scrollTop.value
       }
-    })
-
-    console.log('进入,载入滚动位置')
-  } else {
-    scrollTop.value = listRef.value?.scrollTop || 0
-    console.log('离开,记录滚动位置', scrollTop.value)
-  }
+      console.log('进入,载入滚动位置')
+    }, 500) // 页面动画执行完毕后&公共active
+  })
+})
+onDeactivated(() => {
+  scrollTop.value = listRef.value?.scrollTop || 0
+  console.log('离开,记录滚动位置', scrollTop.value)
 })
 const select = ({ id, songChannel }: SongGroupListData) => {
-  openPage(`/playListDetail/${songChannel}/${id}`)
+  router.push({
+    name: 'playListDetail-page',
+    params: {
+      songChannel,
+      id
+    }
+  })
 }
 
 </script>

@@ -43,32 +43,85 @@ const excludePages = computed(() => state.excludePages())
   }
 }
 
-.slide-right-enter-active,
-.slide-right-leave-active,
-.slide-left-enter-active,
-.slide-left-leave-active {
-  will-change: transform;
-  transition: transform 0.25s;
-  position: fixed;
-  width: 100%;
-  opacity: 1;
-  height: 100%;
-  pointer-events: none;
+// .slide-right-enter-active,
+// .slide-right-leave-active,
+// .slide-left-enter-active,
+// .slide-left-leave-active {
+//   will-change: transform;
+//   transition: transform 0.25s;
+//   position: fixed;
+//   width: 100%;
+//   opacity: 1;
+//   height: 100%;
+//   pointer-events: none;
+// }
+// .slide-right-enter-from {
+//   z-index: 1;
+//   transform: translateX(-100%);
+// }
+// .slide-right-leave-active {
+//   transition-delay: 35ms;
+//   transform: translateX(100%);
+// }
+// .slide-left-enter-from {
+//   z-index: 1;
+//   transform: translateX(100%);
+// }
+// .slide-left-leave-active {
+//   transition-delay: 35ms;
+//   transform: translateX(-100%);
+// }
+
+.slide-left-enter-active {
+  animation-name: slide-left-in;
+  animation-duration: .25s;
 }
-.slide-right-enter-from {
-  z-index: 1;
-  transform: translateX(-100%);
+.slide-left-leave-active {
+  animation-name: slide-left-out;
+  animation-duration: .25s;
+}
+@keyframes slide-left-in {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+@keyframes slide-left-out {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+.slide-right-enter-active {
+  animation-name: slide-right-in;
+  animation-duration: 0.25s;
 }
 .slide-right-leave-active {
-  transition-delay: 35ms;
-  transform: translateX(100%);
+  animation-name: slide-right-out;
+  animation-duration: 0.25s;
 }
-.slide-left-enter-from {
-  z-index: 1;
-  transform: translateX(100%);
+@keyframes slide-right-in {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+  100% {
+    display: none;
+    opacity: 0;
+  }
 }
-.slide-left-leave-active {
-  transition-delay: 35ms;
-  transform: translateX(-100%);
+@keyframes slide-right-out {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 </style>
