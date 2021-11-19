@@ -1,11 +1,9 @@
 <template>
-  <Layout/>
-  <MinBar/>
+  <Layout />
+  <div class="minBar"></div>
 </template>
 <script lang="ts" setup>
-import MinBar from '@/components/minBar.vue'
 import Layout from '@/components/layout/layout.vue'
-
 </script>
 <style lang="less">
 html,
@@ -14,5 +12,12 @@ body,
   width: 100%;
   height: 100%;
   margin: 0px;
+}
+.minBar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  background: yellow;
 }
 </style>

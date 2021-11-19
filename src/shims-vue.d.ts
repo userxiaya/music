@@ -6,7 +6,6 @@ declare module '*.vue' {
 }
 declare module '*.png'
 declare module '*.js'
-declare module 'vue-virtual-scroller'
 // eslint-disable-next-line
 declare var requireModuleJs = (module: string) => any
 declare module 'jsonp'

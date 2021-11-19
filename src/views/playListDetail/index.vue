@@ -1,9 +1,9 @@
 <template>
   <div class="detail" ref="detailRef">
     <div class="loading" v-if="loading">
-      <Loading size="24px">加载中...</Loading>
+      <Loading color="#07c160" size="24px">加载中...</Loading>
     </div>
-    <template v-else-if="showType==='index'">
+    <template v-else-if="showType === 'index'">
       <div class="playContent" ref="contentRef">
         <div class="overlay" :style="contentStyle"></div>
         <Sticky>
@@ -21,7 +21,11 @@
         <div class="content">
           <div class="box">
             <div class="img">
-              <Image lazy-load :src="detail?.imageUrl || ''" />
+              <Image lazy-load :src="detail?.imageUrl || ''">
+                <template v-slot:loading>
+                  <Loading type="spinner" size="20" />
+                </template>
+              </Image>
             </div>
             <div class="text">
               <div class="box">
@@ -31,8 +35,11 @@
                   <div class="nick_name">{{ detail?.userName }}</div>
                 </div>
                 <div class="desc" @click.stop="openDetail">
-                  <div class="van-ellipsis">简介：<span v-html="detail?.desc" style="height: 100%; overflow: hidden;"></span></div>
-                  <Icon name="arrow"/>
+                  <div class="van-ellipsis">
+                    简介：
+                    <span v-html="detail?.desc" style="height: 100%; overflow: hidden;"></span>
+                  </div>
+                  <Icon name="arrow" />
                 </div>
               </div>
             </div>
@@ -43,7 +50,12 @@
         <SongItem v-for="item in detail?.list || []" :key="`${item.id}`" :song="item" />
       </List>
     </template>
-    <Detail v-if="showType==='detail'" :contentStyle="contentStyle" :detail="detail" @back="closeDetail"/>
+    <Detail
+      v-if="showType === 'detail'"
+      :contentStyle="contentStyle"
+      :detail="detail"
+      @back="closeDetail"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -62,7 +74,7 @@ const route = useRoute()
 const router = useRouter()
 const detailRef = ref<HTMLElement | null>(null)
 const contentRef = ref<HTMLElement | null>(null)
-const showType = ref<'index'|'detail'>('index')
+const showType = ref<'index' | 'detail'>('index')
 const loading = ref<boolean>(false)
 const contentHeight = ref<number>(0)// 容器高度
 const scrollTop = ref<number>(0) // 滚动位置
@@ -231,6 +243,9 @@ onBeforeRouteLeave((to, from, next) => {
       .img {
         overflow: hidden;
         border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 200px;
         height: 200px;
       }

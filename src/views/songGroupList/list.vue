@@ -9,12 +9,13 @@
 <script lang="ts" setup>
 import { List } from 'vant'
 import { useLoadMore } from 'vue-request'
-import { computed, Ref, ref, defineProps, onActivated, onDeactivated } from 'vue'
+import { computed, Ref, ref, defineProps, watch, nextTick } from 'vue'
 import Item from '@/components/songGroupItem.vue'
 import { SongGroupData, SongGroupListData } from './type'
 import { openPage } from '@/utils/tools'
 
 const props = defineProps<{
+  show: boolean,
   getList:(params?: { current?: number, pageSize?: number }) => Promise<SongGroupData>
 }>()
 interface getListRequest {
@@ -22,6 +23,9 @@ interface getListRequest {
   dataList: Ref<SongGroupData['list'] | []>
   loadMore: (params?: { current?: number, pageSize?: number }) => void
 }
+const show = computed(() => {
+  return props.show
+})
 const scrollTop = ref<number>(0)
 const current = ref<number>(0)
 const pageSize = ref<number>(30)
@@ -48,15 +52,19 @@ const onLoad = () => {
     loadMore()
   }
 }
-onActivated(() => {
-  if (listRef?.value) {
-    listRef.value.scrollTop = scrollTop.value
+watch(show, (flag) => {
+  if (flag) {
+    nextTick(() => {
+      if (listRef?.value && scrollTop.value) {
+        listRef.value.scrollTop = scrollTop.value
+      }
+    })
+
+    console.log('进入,载入滚动位置')
+  } else {
+    scrollTop.value = listRef.value?.scrollTop || 0
+    console.log('离开,记录滚动位置', scrollTop.value)
   }
-  console.log('进入,载入滚动位置')
-})
-onDeactivated(() => {
-  scrollTop.value = listRef.value?.scrollTop || 0
-  console.log('离开,记录滚动位置')
 })
 const select = ({ id, songChannel }: SongGroupListData) => {
   openPage(`/playListDetail/${songChannel}/${id}`)
