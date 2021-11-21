@@ -29,12 +29,12 @@ module.exports = {
         changeOrigin: true, // 是否跨域
         pathRewrite: {
           '^/u.y.qq.com': ''
-        },
-        // 突破host和origin的限制
-        headers: {
-          referer: 'https://y.qq.com/',
-          origin: 'https://y.qq.com'
         }
+        // 突破host和origin的限制
+        // headers: {
+        //   referer: 'https://y.qq.com/',
+        //   origin: 'https://y.qq.com'
+        // }
       },
       '/i.y.qq.com': {
         target: 'https://i.y.qq.com',

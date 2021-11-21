@@ -1,5 +1,5 @@
 <template>
-  <Cell class="cell" center :label="singerName(props.song.singer)" is-link>
+  <Cell class="cell" center :label="singerName(props.song.singer)" is-link @click.stop="playSong">
     <template #title>
       <span class="van-multi-ellipsis--l2">
         {{ props.song.name }}
@@ -12,6 +12,8 @@
 import { singerItem, songItem } from '@/views/song'
 import { Cell, Tag } from 'vant'
 import { defineProps } from 'vue'
+import { getMusicUrl as getMusicUrlQQ } from '@/api/qq'
+import { isWebview } from '@/utils/tools'
 const props = defineProps<{
   song: songItem
 }>()
@@ -21,6 +23,21 @@ const singerName = (singer?: singerItem[]): string => {
     return e.name
   })
   return singerNameList.join(' / ')
+}
+const playSong = async () => {
+  const song = props?.song || {}
+  console.log(song)
+  const { songmid } = song
+  if (songmid) {
+    const url = await getMusicUrlQQ(songmid)
+    if (isWebview) {
+      const webview = window?.requireModuleJs?.('webview')
+      webview.sendMessage({
+        ...song,
+        songUrl: url
+      })
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

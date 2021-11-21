@@ -4,6 +4,21 @@ import { playDetail } from '@/views/playListDetail/type'
 import { newAxiosRequestConfig } from '@/views/song'
 import { SongGroupData } from '@/views/songGroupList/type'
 
+function getImageUrl (qqimgid:string, imgType: 'artist'|'album') {
+  if (qqimgid == null) {
+    return ''
+  }
+  let category = ''
+  if (imgType === 'artist') {
+    category = 'T001R300x300M000'
+  }
+  if (imgType === 'album') {
+    category = 'T002R300x300M000'
+  }
+  const s = category + qqimgid
+  const url = `https://y.gtimg.cn/music/photo_new/${s}.jpg`
+  return url
+}
 const requestQQ = (option: newAxiosRequestConfig<any>) => {
   return request({
     ...option,
@@ -14,7 +29,7 @@ const requestQQ = (option: newAxiosRequestConfig<any>) => {
 }
 
 const baseUrl1: string = isWebview ? 'https://c.y.qq.com' : '/c.y.qq.com'
-// const baseUrl2:string = isWebview ? 'https://u.y.qq.com' : '/u.y.qq.com'
+const baseUrl2:string = isWebview ? 'https://u.y.qq.com' : '/u.y.qq.com'
 const baseUrl3: string = isWebview ? 'https://i.y.qq.com' : '/i.y.qq.com'
 /**
  *
@@ -111,8 +126,10 @@ export const getPlayDetail = (id: string): Promise<playDetail> => {
         list: data.songlist.map((e: any) => {
           return {
             id: e.songid,
+            songmid: e.songmid,
             name: e.songname,
             isVip: e?.pay?.payplay === 1,
+            albumImg: getImageUrl(e.albummid, 'album'),
             singer: e.singer.map((s: { id: number; name: string }) => {
               return {
                 id: s.id,
@@ -124,6 +141,37 @@ export const getPlayDetail = (id: string): Promise<playDetail> => {
       }
       resolve(result)
     }).catch((err) => {
+      reject(err)
+    })
+  })
+}
+// 获取歌曲地址
+export const getMusicUrl = (songmid: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    requestQQ({
+      url: '/cgi-bin/musicu.fcg',
+      method: 'GET',
+      eeAjax: false,
+      baseURL: baseUrl2,
+      params: {
+        loginUin: 0,
+        hostUin: 0,
+        format: 'json',
+        inCharset: 'utf8',
+        outCharset: 'utf-8',
+        notice: 0,
+        platform: 'yqq.json',
+        needNewCode: 0,
+        data: { req_0: { module: 'vkey.GetVkeyServer', method: 'CgiGetVkey', param: { guid: '10000', songmid: [songmid], songtype: [0], uin: '0', loginflag: 1, platform: '20' } }, comm: { uin: 0, format: 'json', ct: 20, cv: 0 } }
+      }
+    }).then((data) => {
+      if (data.req_0.data.midurlinfo[0].purl === '') {
+        return ''
+      }
+      const url = data.req_0.data.sip[0] + data.req_0.data.midurlinfo[0].purl
+      resolve(url)
+    }).catch((err) => {
+      console.log(JSON.parse(err))
       reject(err)
     })
   })

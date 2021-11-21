@@ -16,6 +16,8 @@ export type tagItem = {
 // 歌曲列表-item
 export type songItem = {
   id: number,
+  songmid?: string,
+  albumImg?: string,
   name: string,
   isVip: boolean,
   singer: singerItem[]

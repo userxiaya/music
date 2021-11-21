@@ -5,7 +5,11 @@ import store from './store'
 import VConsole from 'vconsole'
 import { Lazyload } from 'vant'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const vConsole = new VConsole()
+if (process.env.NODE_ENV !== 'production') {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const vConsole = new VConsole()
+}
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// const vConsole = new VConsole()
 
 createApp(App).use(store).use(router).use(Lazyload).mount('#app')

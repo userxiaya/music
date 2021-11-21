@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <StatusBar>
-      <NavBar :border="false" title="歌单" left-arrow>
+      <NavBar :border="false" title="歌单">
         <template #right>
           <Icon name="search" size="18" />
         </template>

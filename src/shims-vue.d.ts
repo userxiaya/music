@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -6,7 +7,9 @@ declare module '*.vue' {
 }
 declare module '*.png'
 declare module '*.js'
-// eslint-disable-next-line
-declare var requireModuleJs = (module: string) => any
+declare interface Window {
+  requireModuleJs: (module: string) => any
+  audioCallBack: (res: any) => void
+}
 declare module 'jsonp'
 type songChannel = 'QQ' | 'netEase' | 'kugou' | 'kuwo'
